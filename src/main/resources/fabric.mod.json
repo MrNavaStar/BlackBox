@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "BlackBox",
+  "version": "${version}",
+  "name": "BlackBox",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/ethan/BlackBox"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/BlackBox/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.mrnavastar.blackbox.client.BlackBoxClient"
+    ],
+    "main": [
+      "me.mrnavastar.blackbox.BlackBox"
+    ]
+  },
+  "mixins": [
+    "BlackBox.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
