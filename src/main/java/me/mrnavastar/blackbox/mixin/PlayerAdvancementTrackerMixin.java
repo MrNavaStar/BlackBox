@@ -1,6 +1,5 @@
 package me.mrnavastar.blackbox.mixin;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
@@ -15,7 +14,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -27,10 +28,11 @@ public class PlayerAdvancementTrackerMixin {
 
     @Shadow private ServerPlayerEntity owner;
 
-    @Redirect(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;toJson(Lcom/google/gson/JsonElement;Ljava/lang/Appendable;)V", remap = false))
-    private void savePlayerAdvancementData(Gson gson, JsonElement jsonElement, Appendable writer) {
+    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PathUtil;createDirectories(Ljava/nio/file/Path;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private void savePlayerAdvancementData(CallbackInfo ci, Map map, JsonElement jsonElement) {
         if (BlackBox.playerAdvancementHandler == null) return;
         BlackBox.playerAdvancementHandler.saveAdvancementData(owner, jsonElement);
+        ci.cancel();
     }
 
     @Redirect(method = "load", at = @At(value = "INVOKE", target = "Ljava/nio/file/Files;isRegularFile(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z"))
