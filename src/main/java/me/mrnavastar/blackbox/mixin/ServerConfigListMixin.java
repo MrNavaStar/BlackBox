@@ -31,7 +31,7 @@ public class ServerConfigListMixin {
     private final boolean operatorsRegistered = file.equals(ServerConfigHandler.OPERATORS_FILE) && BlackBox.serverOperatorsHandler != null;
     private final boolean whitelistRegistered = file.equals(ServerConfigHandler.WHITE_LIST_FILE) && BlackBox.serverWhitelistHandler != null;
 
-    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/common/io/Files;newWriter(Ljava/io/File;Ljava/nio/charset/Charset;)Ljava/io/BufferedWriter;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/common/io/Files;newWriter(Ljava/io/File;Ljava/nio/charset/Charset;)Ljava/io/BufferedWriter;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true, remap = false)
     private void save(CallbackInfo ci, JsonArray jsonArray) {
         if (bannedPlayersRegistered) BlackBox.serverBannedPlayersHandler.saveBannedPlayersList(jsonArray);
         else if (bannedIpsRegistered) BlackBox.serverBannedIPsHandler.saveBannedIPList(jsonArray);
@@ -46,13 +46,13 @@ public class ServerConfigListMixin {
         return instance.exists();
     }
 
-    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/common/io/Files;newReader(Ljava/io/File;Ljava/nio/charset/Charset;)Ljava/io/BufferedReader;"))
+    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/common/io/Files;newReader(Ljava/io/File;Ljava/nio/charset/Charset;)Ljava/io/BufferedReader;", remap = false))
     private BufferedReader disableReader(File file, Charset cs) throws FileNotFoundException {
         if (bannedPlayersRegistered || bannedIpsRegistered || operatorsRegistered || whitelistRegistered) return (BufferedReader) Reader.nullReader();
         return Files.newReader(file, cs);
     }
 
-    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;fromJson(Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;"))
+    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;fromJson(Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;", remap = false))
     private <T> T load(Gson gson, Reader reader, Class<T> classOfT) {
         if (bannedPlayersRegistered) return (T) BlackBox.serverBannedPlayersHandler.loadBannedPlayersList();
         else if (bannedIpsRegistered) return (T) BlackBox.serverBannedIPsHandler.loadBannedIPList();

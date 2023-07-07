@@ -1,5 +1,6 @@
 package me.mrnavastar.blackbox.mixin;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
@@ -26,11 +27,10 @@ public class PlayerAdvancementTrackerMixin {
 
     @Shadow private ServerPlayerEntity owner;
 
-    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;toJson(Lcom/google/gson/JsonElement;Ljava/lang/Appendable;)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void savePlayerAdvancementData(CallbackInfo ci, Map map, JsonElement jsonElement, Writer writer) {
+    @Redirect(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;toJson(Lcom/google/gson/JsonElement;Ljava/lang/Appendable;)V", remap = false))
+    private void savePlayerAdvancementData(Gson gson, JsonElement jsonElement, Appendable writer) {
         if (BlackBox.playerAdvancementHandler == null) return;
         BlackBox.playerAdvancementHandler.saveAdvancementData(owner, jsonElement);
-        ci.cancel();
     }
 
     @Redirect(method = "load", at = @At(value = "INVOKE", target = "Ljava/nio/file/Files;isRegularFile(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z"))
@@ -45,7 +45,7 @@ public class PlayerAdvancementTrackerMixin {
         return Files.newBufferedReader(path, cs);
     }
 
-    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/gson/internal/Streams;parse(Lcom/google/gson/stream/JsonReader;)Lcom/google/gson/JsonElement;"))
+    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lcom/google/gson/internal/Streams;parse(Lcom/google/gson/stream/JsonReader;)Lcom/google/gson/JsonElement;", remap = false))
     private JsonElement loadPlayerAdvancementData(JsonReader jsonReader) {
         if (BlackBox.playerAdvancementHandler != null) return BlackBox.playerAdvancementHandler.loadAdvancementData(owner);
         return Streams.parse(jsonReader);
