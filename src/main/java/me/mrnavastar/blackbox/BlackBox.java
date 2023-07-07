@@ -5,9 +5,8 @@ import me.mrnavastar.blackbox.api.player.PlayerDataHandler;
 import me.mrnavastar.blackbox.api.player.PlayerStatHandler;
 import me.mrnavastar.blackbox.api.server.*;
 import me.mrnavastar.blackbox.api.universal.CrashReportHandler;
-import net.fabricmc.api.ModInitializer;
 
-public class BlackBox implements ModInitializer {
+public class BlackBox {
 
     public static PlayerDataHandler playerDataHandler = null;
     public static PlayerAdvancementHandler playerAdvancementHandler = null;
@@ -20,11 +19,6 @@ public class BlackBox implements ModInitializer {
     public static ServerUserCacheHandler serverUserCacheHandler = null;
 
     public static CrashReportHandler crashReportHandler = null;
-
-    @Override
-    public void onInitialize() {
-
-    }
 
     public static void registerHandler(PlayerDataHandler handler) {
         playerDataHandler = handler;
