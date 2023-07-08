@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "sqlib",
+  "id": "blackbox",
   "version": "debug-build",
   "name": "BlackBox",
   "description": "A Minecraft library for custom game storage",
@@ -11,11 +11,6 @@
   "license": "CC0-1.0",
   "icon": "assets/BlackBox/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "me.mrnavastar.blackbox.BlackBox"
-    ]
-  },
   "mixins": [
     "BlackBox.mixins.json"
   ],

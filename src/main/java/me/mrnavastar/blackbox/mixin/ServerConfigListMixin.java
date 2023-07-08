@@ -33,11 +33,22 @@ public class ServerConfigListMixin {
 
     @Inject(method = "save", at = @At(value = "INVOKE", target = "Lcom/google/common/io/Files;newWriter(Ljava/io/File;Ljava/nio/charset/Charset;)Ljava/io/BufferedWriter;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true, remap = false)
     private void save(CallbackInfo ci, JsonArray jsonArray) {
-        if (bannedPlayersRegistered) BlackBox.serverBannedPlayersHandler.saveBannedPlayersList(jsonArray);
-        else if (bannedIpsRegistered) BlackBox.serverBannedIPsHandler.saveBannedIPList(jsonArray);
-        else if (operatorsRegistered) BlackBox.serverOperatorsHandler.saveOperatorList(jsonArray);
-        else if (whitelistRegistered) BlackBox.serverWhitelistHandler.saveWhitelist(jsonArray);
-        ci.cancel();
+        if (bannedPlayersRegistered) {
+            BlackBox.serverBannedPlayersHandler.saveBannedPlayersList(jsonArray);
+            ci.cancel();
+        }
+        else if (bannedIpsRegistered) {
+            BlackBox.serverBannedIPsHandler.saveBannedIPList(jsonArray);
+            ci.cancel();
+        }
+        else if (operatorsRegistered) {
+            BlackBox.serverOperatorsHandler.saveOperatorList(jsonArray);
+            ci.cancel();
+        }
+        else if (whitelistRegistered) {
+            BlackBox.serverWhitelistHandler.saveWhitelist(jsonArray);
+            ci.cancel();
+        }
     }
 
     @Redirect(method = "load", at = @At(value = "INVOKE", target = "Ljava/io/File;exists()Z"))
