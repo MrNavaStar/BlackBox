@@ -4,14 +4,13 @@
   "package": "me.mrnavastar.blackbox.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "CrashReportMixin",
     "LevelStorageSessionMixin",
     "PlayerAdvancementTrackerMixin",
     "PlayerManagerMixin",
     "ServerConfigListMixin",
     "ServerStatHandlerMixin",
     "UserCacheMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

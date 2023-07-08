@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "blackbox",
-  "version": "debug-build",
+  "version": "0.debug-build",
   "name": "BlackBox",
   "description": "A Minecraft library for custom game storage",
   "authors": ["MrNavaStar"],
