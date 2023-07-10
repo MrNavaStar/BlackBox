@@ -29,7 +29,7 @@ public class PlayerManagerMixin {
 
     @Inject(method = "savePlayerData", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
     private void saveStatData(ServerPlayerEntity player, CallbackInfo ci) {
-        if (BlackBox.playerStatHandler != null) BlackBox.playerStatHandler.saveStatData(player, statisticsMap.get(player.getUuid()).toString());
+        if (BlackBox.playerStatHandler != null) BlackBox.playerStatHandler.saveStatData(player, statisticsMap.get(player.getUuid()).asString());
     }
 
     @Redirect(method = "savePlayerData", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))

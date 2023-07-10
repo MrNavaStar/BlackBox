@@ -1,7 +1,6 @@
 {
   "pack": {
-    "description": "blackbox",
-    "pack_format": 13,
-    "forge:server_data_pack_format": 12
+    "description": "BlackBox (Contains no resources)",
+    "pack_format": 8
   }
 }
